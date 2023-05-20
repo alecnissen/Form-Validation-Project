@@ -63,9 +63,13 @@ body {
     border-color: red;
 } 
 
+.error-input { 
+    border-color: 2px solid red;
+}
+
 .form-input-control .error { 
     color: red; 
-    font-size: 9px;
+    font-size: 12px;
     height: 13px; 
 }
 
