@@ -1,16 +1,3 @@
-// grab all input values, 
-
-// input fields grabbed, 
-
-// create input listener for each field, 
-
-// work conditionals inside there, 
-
-// first email, and first make sure email is not blank, 
-
-// then apply error class, 
-
-
 let emailInput = document.getElementById("email-input");
 
 let countryInput = document.getElementById("country-input"); 
@@ -27,7 +14,13 @@ let errorClassCountry = document.getElementsByClassName("error")[1];
 
 let errorClassZipCode = document.getElementsByClassName("error")[2]; 
 
-console.log(errorClassZipCode);
+let errorClassPassword = document.getElementsByClassName("error")[3]; 
+
+let errorClassPasswordConfirmation = document.getElementsByClassName("error")[4];
+
+let signUpBtn = document.getElementById("form-sign-up-btn"); 
+
+let signUpForm = document.getElementById("form"); 
 
 let errorMessage;
 
@@ -37,40 +30,10 @@ emailInput.addEventListener('input', (e) => {
 
      val = e.target.value;
 
-    // pass the values to a function which prints the message. 
-
-    checkEmailInput(val);
-
-    // if (val === '' || val == null) {
-    //     errorMessage = "Email cannot be blank!";
-
-    //     setErrorClass(val, errorMessage);
-
-
-    //     // errorClassEmail.textContent = "Email cannot be blank!";
-    //     //  emailInput.classList.add('error-input');
-    //     // emailInput.className = "error-input";
-    //     //  emailInput.style.borderColor = "red";
-    // } else if (val.length < 5) {
-
-    //     errorMessage = "Email cannot be less than 5 characters"; 
-
-    //     setErrorClass(val, errorMessage); 
-    //      // errorClassEmail.textContent = "Email cannot be less than 5 characters"; 
-    //     //  emailInput.classList.add('error-input');
-    //     // emailInput.className = "error-input";
-    //      //  emailInput.style.borderColor = "red";
-    // } else if (!val.contains('@')) {
-    //     errorMessage = "Must include @";
-
-    //     setErrorClass(val, errorMessage); 
-    //     // errorClassEmail.textContent = "Must include @";
-    //     // emailInput.style.borderColor = "red"; 
-    // } 
+    checkEmailInput(val); 
 
 
 }) 
-
 
 countryInput.addEventListener("input", (e) => { 
 
@@ -86,6 +49,19 @@ zipCodeInput.addEventListener("input", (e) => {
 
     checkZipCodeInput(val);
 
+}); 
+
+passwordInput.addEventListener("input", (e) => { 
+
+    val = e.target.value;  
+
+    checkPasswordInput(val);
+}) 
+
+passwordInputConfirmation.addEventListener("input", (e) => { 
+    val = e.target.value;
+
+    checkPasswordConfirmInput(val);
 })
 
 
@@ -132,6 +108,36 @@ function checkZipCodeInput(input) {
         setSuccessZipCode();
     }
 
+}
+
+let password1Value; 
+
+let password2Value; 
+
+function checkPasswordInput(input) { 
+
+ password1Value = input; 
+
+if (password1Value === '' || password1Value == null) { 
+    setErrorClassPassword(password1Value, "Password cannot be blank!"); 
+} else if (password1Value.length <= 8) { 
+    setErrorClassPassword(password1Value, "Password must be at least 8 characters!"); 
+} else { 
+    setSuccessPassword();
+}
+
+} 
+
+function checkPasswordConfirmInput(input) { 
+    password2Value = input; 
+
+    if (password2Value === '' || password2Value == null) { 
+        setErrorClassConfirmPassword(password2Value, "Password cannot be blank!"); 
+    } else if (password2Value !== password1Value) { 
+        setErrorClassConfirmPassword(password2Value, "Passwords do not match!"); 
+    } else { 
+        setSuccessPasswordConfirm();
+    }
 }
 
 
@@ -197,131 +203,114 @@ function setErrorClassZipCode(value, message) {
 
 function setSuccessZipCode() { 
 
-    zipCodeInput.style.border = "2px solid red";
+    zipCodeInput.style.border = "2px solid green";
 
     errorClassZipCode.textContent = '';
 
+} 
+
+function setErrorClassPassword(value, message) { 
+    let theValue = value; 
+
+    let theMessage = message; 
+
+    errorClassPassword.textContent = theMessage; 
+
+    passwordInput.style.border = "2px solid red"; 
 }
 
+function setSuccessPassword() { 
 
+    errorClassPassword.textContent = ''; 
 
-// one function which will check inputs, 
+    passwordInput.style.border = "2px solid green"; 
 
-// function will take those inputs, any apply the appropriate message to them, 
+}
 
-// either apply the error class or the success class, 
+function setErrorClassConfirmPassword(value, message) { 
+    let theValue = value; 
 
-// 
+    let theMessage = message; 
 
+    errorClassPasswordConfirmation.textContent = theMessage; 
 
+    passwordInputConfirmation.style.border = "2px solid red"; 
 
 
-// pass the value, and message to changeMessage function, 
+} 
 
-// should the value and message variables be global? 
+function setSuccessPasswordConfirm() { 
 
-// should I make them as general as possible, 
+    errorClassPasswordConfirmation.textContent = ''; 
 
-// within the global scope, then within each input listener for each field, 
+    passwordInputConfirmation.style.border = "2px solid green";
+} 
 
-// values will be updated and passed the functons, 
 
-// try the first one with email, 
+signUpForm.addEventListener("click", (e) => { 
 
+    e.preventDefault();
+})
 
+signUpBtn.addEventListener("click", (e) => { 
 
+    let emailValue = document.getElementById("email-input").value; 
 
+    let countryValue = document.getElementById("country-input").value; 
 
+    let zipValue = document.getElementById("zip-code-input").value; 
 
+    let passwordValue = document.getElementById("password-input").value;  
 
+    let passwordValueConfirm = document.getElementById("password-input-confirmation").value;
 
+    if (emailValue === '' || emailValue == null) { 
+        setErrorClassEmail(emailInput, "Email cannot be blank!"); 
+    }  else if (!isValidEmail(emailValue)) { 
+            setErrorClassEmail(emailValue, "Provide a valid email!");
+         } else { 
+             setSuccessClassEmail();
+         } 
+         
+    
+    if (countryValue === '' || countryValue == null) { 
+         setErrorClassCountry(countryValue, "Country cannot be blank!")
+     } else if (countryValue.length > 25) { 
+            setErrorClassCountry(countryValue, "Exceeds length of 25 characters!"); 
+        } else if (countryValue.length < 2) { 
+            setErrorClassCountry(countryValue, "Cannot be less than 2 characters!"); 
+        } else { 
+            setSuccessClassCountry();
+        }
 
 
+    if (zipValue === '' || zipValue == null) { 
+        setErrorClassZipCode(zipValue, "Zip-Code cannot be blank!");
+    } else if (zipValue.length < 5) { 
+        setErrorClassZipCode(zipValue, "Zip must be 5 characters!")
+    } else if (!Number(zipValue)) { 
+        setErrorClassZipCode(zipValue, "Zip must be a number!");
+    } else {
+        setSuccessZipCode();
+    } 
 
+    if (password1Value === '' || password1Value == null) { 
+        setErrorClassPassword(password1Value, "Password cannot be blank!"); 
+    } else if (password1Value.length <= 8) { 
+        setErrorClassPassword(password1Value, "Password must be at least 8 characters!"); 
+    } else { 
+        setSuccessPassword();
+    }
 
+    if (password2Value === '' || password2Value == null) {
+        setErrorClassConfirmPassword(password2Value, "Password cannot be blank!"); 
+    } else if (password2Value !== password1Value) { 
+        setErrorClassConfirmPassword(password2Value, "Passwords do not match!"); 
+    } else {
+        setSuccessPasswordConfirm();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        alert("Form submitted Successfully!");
+    }
+    
+});
 
